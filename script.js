@@ -36,21 +36,40 @@ btnAbrir?.addEventListener('click', () => {
   escribir();
 });
 
-/* ------------- Galería automática ------------- */
+/* ------------- Carrusel automático infinito ------------- */
 const galeria = document.getElementById('galeria');
-let fotos = galeria ? Array.from(galeria.children) : [];
-let idx = 0;
+if (galeria) {
+  // 1️⃣ Crear un track interno
+  const track = document.createElement('div');
+  track.classList.add('galeria-track');
+  track.style.display = 'flex';
+  track.style.gap = '14px';
+  track.style.willChange = 'transform';
 
-function rotarGaleria() {
-  if(!fotos.length) return;
-  fotos.forEach(f => { f.style.transform = 'scale(0.96)'; f.style.opacity = '0.9'; });
-  const centr = fotos[idx % fotos.length];
-  centr.style.transform = 'scale(1.06)';
-  centr.style.opacity = '1';
-  idx++;
+  // 2️⃣ Mover todas las fotos al track
+  const fotosOriginales = Array.from(galeria.children);
+  fotosOriginales.forEach(f => track.appendChild(f));
+
+  // 3️⃣ Duplicar las fotos para efecto infinito
+  fotosOriginales.forEach(f => track.appendChild(f.cloneNode(true)));
+
+  // 4️⃣ Agregar track al contenedor
+  galeria.innerHTML = '';
+  galeria.appendChild(track);
+
+  let pos = 0;
+  const velocidad = 0.5; // px por frame
+
+  function animCarrusel() {
+    pos -= velocidad;
+    const anchoTotal = track.scrollWidth / 2; // mitad porque duplicamos
+    if (Math.abs(pos) >= anchoTotal) pos = 0;
+    track.style.transform = `translateX(${pos}px)`;
+    requestAnimationFrame(animCarrusel);
+  }
+
+  animCarrusel();
 }
-rotarGaleria();
-setInterval(rotarGaleria, 3000); // cambia foto cada 3 segundos
 
 /* ------------- Botón sorpresa ------------- */
 const btnSorpresa = document.getElementById('btnSorpresa');
@@ -86,7 +105,7 @@ class Part {
   }
   step(){
     this.x += this.vx; this.y += this.vy;
-    this.vy += 0.01; // gravedad leve
+    this.vy += 0.01;
     this.rot += 0.04;
     this.life -= 1;
     if(this.y > H + 80) this.life = 0;
@@ -117,7 +136,7 @@ for(let i=0;i<36;i++){
   parts.push(new Part(Math.random()*W, H + Math.random()*H, (Math.random()-0.5)*0.4, - (0.4 + Math.random()*1.2), 8 + Math.random()*10, 'heart', 999, 'rgba(255,255,255,0.9)', Math.random()*0.6));
 }
 
-// pequeños gatos ornamentales (usa hearts como placeholder estilizado)
+// pequeños gatos ornamentales
 function crearGatos(count=6){
   for(let i=0;i<count;i++){
     parts.push(new Part(Math.random()*W, H + Math.random()*H, (Math.random()-0.5)*0.25, - (0.2 + Math.random()*0.5), 10 + Math.random()*10, 'heart', 999, 'rgba(255,255,255,0.85)', Math.random()*0.6));
@@ -137,7 +156,6 @@ function anim(){
 }
 anim();
 
-// lanzar confetti
 function lanzarConfetti(count=80){
   const colors = ['#d97198','#ffd166','#9ad1ff','#caa2ff','#ffffff'];
   for(let i=0;i<count;i++){

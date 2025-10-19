@@ -102,3 +102,30 @@ body{
   .header h1{font-size:1.9rem}
   .carta{width:96%}
 }
+
+.galeria {
+  display: flex;
+  gap: 14px;
+  overflow: hidden; /* ocultar partes que salen del contenedor */
+  width: 100%;
+  max-width: 920px;
+  justify-content: flex-start;
+}
+
+.galeria-track {
+  display: flex;
+  gap: 14px;
+  transition: transform 0.05s linear;
+}
+.foto {
+  flex: 0 0 auto;
+  width: 260px; /* o el tamaño que uses */
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.foto img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
