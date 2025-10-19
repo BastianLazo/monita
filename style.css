@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top left, #ffb6c1, #ff6b81);
+  color: #fff;
+  overflow: hidden;
+  text-align: center;
+  height: 100vh;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  padding: 50px 20px;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+button {
+  background-color: #fff;
+  color: #ff6b81;
+  border: none;
+  border-radius: 25px;
+  padding: 15px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.oculto {
+  display: none;
+}
+
+.galeria {
+  margin-top: 30px;
+}
+
+.galeria img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+#corazones {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
