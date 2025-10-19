@@ -1,94 +1,100 @@
-// ========== Contenido dinámico (mensaje) ==========
+/* ------------- Contenido / Mensajes ------------- */
 const textoBreve = "Desde que llegaste a mi vida todo tiene más color. Gracias por ser mi inspiración, mi refugio y mi fuerza. Te amo cada día más.";
 const textoMedio  = "Amor, en estos tres años vivimos tanto que a veces parece un sueño. Me cambiaste la vida: me empujaste a mejorar, a creer en mí y a disfrutar cada pequeño momento. Cada día doy gracias por seguir a tu lado. Eres mi inspiración, mi calma y la aventura que elijo siempre. Gracias por hacerme sentir vivo.";
-const textoLargo  = "Amor mío, desde que entraste en mi mundo todo se transformó. Compartimos risas, desafíos, abrazos y silencios que hablan. Me enseñaste a ser mejor persona, a intentar aún cuando duela, y a valorar las pequeñas victorias. Cada mañana doy gracias por tenerte; cada noche me duermo con el corazón tranquilo porque sé que estamos juntos. Eres mi musa, mi compañera, mi hogar. Gracias por estos tres años y por cada día que viene. Te amo con todo mi ser.";
+const textoLargo  = "Miamorsito, desde que entraste en mi mundo todo se transformó. Compartimos risas, momentos dificiles, besos, abrazos y un sin fin de emociones. Me enseñaste a ser mejor persona, a intentar aún cuando duela, y a valorar las pequeñas cosas que nos da la vida. Cada mañana doy gracias por tenerte; cada noche me duermo con el corazón tranquilo porque sé que estamos juntos, y para mi no hay nada más valioso que eso. Eres mi amorsito, mi esposita, mi tonota y mi mundo entero. Gracias por estos tres años y por cada día que viene. Te amito mas que a nada en el universo entero!.";
 
-// Inserta el texto elegido (aquí pongo el texto medio por defecto; cámbialo si quieres)
+// por defecto uso el texto largo en la carta
 document.addEventListener('DOMContentLoaded', () => {
   const p = document.getElementById('textoPrincipal');
-  p.textContent = textoMedio;
+  if(p) p.textContent = ''; // empieza vacío para efecto máquina de escribir
 });
 
-// ========== Carta animada ==========
+/* ------------- Carta animada ------------- */
 const btnAbrir = document.getElementById('btnAbrir');
 const cuerpo = document.getElementById('cuerpoCarta');
 const carta = document.getElementById('carta');
+const textoPrincipal = document.getElementById('textoPrincipal');
 
-btnAbrir.addEventListener('click', () => {
+btnAbrir?.addEventListener('click', () => {
   btnAbrir.style.display = 'none';
   cuerpo.classList.remove('oculto');
+  cuerpo.setAttribute('aria-hidden', 'false');
 
-  // pequeño "flip" y sombra
-  carta.style.transform = 'rotateY(4deg) translateY(-6px)';
+  // animación de leve apertura
+  carta.style.transform = 'rotateY(5deg) translateY(-8px)';
   setTimeout(()=> carta.style.transform = 'none', 900);
 
-  // reproducir spotify: no se puede forzar play en iframe; el usuario puede darle play si el navegador bloquea autoplay
+  // efecto máquina de escribir
+  let i = 0;
+  function escribir() {
+    if(i < textoLargo.length) {
+      textoPrincipal.textContent += textoLargo[i];
+      i++;
+      setTimeout(escribir, 35); // velocidad letra por letra
+    }
+  }
+  escribir();
 });
 
-// ========== Galería animada (simple loop) ==========
+/* ------------- Galería automática ------------- */
 const galeria = document.getElementById('galeria');
-let fotos = Array.from(galeria.children);
-let index = 0;
+let fotos = galeria ? Array.from(galeria.children) : [];
+let idx = 0;
 
-function rotarGaleria(){
-  // efecto: escala la foto central
-  fotos.forEach((f,i) => {
-    f.style.transform = 'scale(0.94)';
-    f.style.opacity = '0.85';
-  });
-  const centr = fotos[index % fotos.length];
+function rotarGaleria() {
+  if(!fotos.length) return;
+  fotos.forEach(f => { f.style.transform = 'scale(0.96)'; f.style.opacity = '0.9'; });
+  const centr = fotos[idx % fotos.length];
   centr.style.transform = 'scale(1.06)';
   centr.style.opacity = '1';
-  index++;
+  idx++;
 }
 rotarGaleria();
-setInterval(rotarGaleria, 3000);
+setInterval(rotarGaleria, 3000); // cambia foto cada 3 segundos
 
-// ========== Botón sorpresa ==========
+/* ------------- Botón sorpresa ------------- */
 const btnSorpresa = document.getElementById('btnSorpresa');
 const mensajeSorpresa = document.getElementById('mensajeSorpresa');
 
-btnSorpresa.addEventListener('click', () => {
+btnSorpresa?.addEventListener('click', () => {
   btnSorpresa.disabled = true;
   mensajeSorpresa.classList.remove('oculto');
+  mensajeSorpresa.setAttribute('aria-hidden','false');
 
-  // lanzar confetti simple
+  // confetti
   lanzarConfetti(120);
-  // pequeña vibración visual
+
+  // vibración suave visual
   setTimeout(()=> {
     mensajeSorpresa.style.transform = 'scale(1.02)';
-    setTimeout(()=> mensajeSorpresa.style.transform = 'none', 400);
-  }, 150);
+    setTimeout(()=> mensajeSorpresa.style.transform = 'none', 420);
+  }, 160);
 });
 
-// ========== Canvas para corazones + confetti ==========
+/* ------------- Canvas: corazones + confetti + gatos ------------- */
 const canvas = document.getElementById('efectos');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
 let H = canvas.height = window.innerHeight;
 
-window.addEventListener('resize', () => {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-});
+window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
 
-// Partículas (usadas tanto para corazones como confetti)
+// Partícula genérica
 class Part {
-  constructor(x,y,vx,vy,size,shape,life,color){
-    this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.size=size;this.shape=shape;this.life=life;this.color=color;
+  constructor(x,y,vx,vy,size,shape,life,color,rot=0){
+    this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.size=size;this.shape=shape;this.life=life;this.color=color;this.rot=rot;
   }
   step(){
-    this.x+=this.vx; this.y+=this.vy;
+    this.x += this.vx; this.y += this.vy;
     this.vy += 0.01; // gravedad leve
+    this.rot += 0.04;
     this.life -= 1;
-    // bounds wrap
-    if(this.x < -50) this.x = W+50;
-    if(this.x > W+50) this.x = -50;
     if(this.y > H + 80) this.life = 0;
   }
   draw(ctx){
     ctx.save();
     ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
     if(this.shape === 'heart'){
       ctx.beginPath();
       ctx.fillStyle = this.color;
@@ -97,7 +103,6 @@ class Part {
       ctx.bezierCurveTo(-this.size*1.2, this.size/3, -this.size/2, -this.size*1.1, 0, -this.size/2);
       ctx.fill();
     } else {
-      // confetti as rectangles
       ctx.fillStyle = this.color;
       ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size*1.2);
     }
@@ -107,51 +112,43 @@ class Part {
 
 let parts = [];
 
-// generar corazones flotando suavemente
-for(let i=0;i<30;i++){
-  parts.push(new Part(Math.random()*W, H + Math.random()*H, (Math.random()-0.5)*0.3, - (0.3 + Math.random()*1.2), 8 + Math.random()*10, 'heart', 999, 'rgba(255,255,255,0.9)'));
+// corazones flotando
+for(let i=0;i<36;i++){
+  parts.push(new Part(Math.random()*W, H + Math.random()*H, (Math.random()-0.5)*0.4, - (0.4 + Math.random()*1.2), 8 + Math.random()*10, 'heart', 999, 'rgba(255,255,255,0.9)', Math.random()*0.6));
 }
+
+// pequeños gatos ornamentales (usa hearts como placeholder estilizado)
+function crearGatos(count=6){
+  for(let i=0;i<count;i++){
+    parts.push(new Part(Math.random()*W, H + Math.random()*H, (Math.random()-0.5)*0.25, - (0.2 + Math.random()*0.5), 10 + Math.random()*10, 'heart', 999, 'rgba(255,255,255,0.85)', Math.random()*0.6));
+  }
+}
+crearGatos(6);
 
 function anim(){
   ctx.clearRect(0,0,W,H);
-  parts.forEach((p,i)=>{
+  for(let i=parts.length-1;i>=0;i--){
+    const p = parts[i];
     p.step();
     p.draw(ctx);
     if(p.life <= 0) parts.splice(i,1);
-  });
+  }
   requestAnimationFrame(anim);
 }
 anim();
 
-// Confetti launcher
+// lanzar confetti
 function lanzarConfetti(count=80){
-  const colors = ['#ff7aa2','#ffd166','#9ad1ff','#caa2ff','#ffffff'];
+  const colors = ['#d97198','#ffd166','#9ad1ff','#caa2ff','#ffffff'];
   for(let i=0;i<count;i++){
-    const x = W/2 + (Math.random()-0.5)*200;
-    const y = H/2 + (Math.random()-0.5)*80;
+    const x = W/2 + (Math.random()-0.5)*300;
+    const y = H/2 + (Math.random()-0.5)*200;
     const vx = (Math.random()-0.5)*6;
     const vy = - (2 + Math.random()*6);
-    const size = 6 + Math.random()*10;
+    const size = 6 + Math.random()*12;
     const color = colors[Math.floor(Math.random()*colors.length)];
-    parts.push(new Part(x,y,vx,vy,size,'rect', 160 + Math.random()*120, color));
+    parts.push(new Part(x,y,vx,vy,size,'rect', 160 + Math.random()*120, color, Math.random()*1.2));
   }
 }
 
-// pequeños gatos flotando (ornamentos)
-function crearGatos(count=6){
-  for(let i=0;i<count;i++){
-    const x = Math.random()*W;
-    const y = Math.random()*H;
-    const vx = (Math.random()-0.5)*0.4;
-    const vy = - (0.2 + Math.random()*0.6);
-    const size = 12 + Math.random()*18;
-    const color = 'rgba(255,255,255,0.85)';
-    parts.push(new Part(x,y,vx,vy,size,'heart',999,color)); // reutilizo forma heart como placeholder
-  }
-}
-crearGatos(5);
-
-// ========== extra: prevenir comportamiento incómodo en móviles ==========
-document.addEventListener('visibilitychange', () => {
-  // opcional: pausar animaciones intensas si necesitamos
-});
+/* fin de script */

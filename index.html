@@ -5,35 +5,48 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Feliz 3° Aniversario ❤️</title>
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Canvas para efectos (corazones y confetti) -->
+  <!-- Canvas para efectos -->
   <canvas id="efectos"></canvas>
 
-  <main class="wrap">
+  <!-- Ornamento gótico superior (SVG) -->
+  <div class="ornamento-top" aria-hidden="true">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0 C300,80 900,80 1200,0 L1200,120 L0,120 Z" fill="rgba(0,0,0,0.2)"/>
+    </svg>
+  </div>
+
+  <main class="wrap" role="main">
+    <!-- Encabezado sutil -->
+    <header class="header">
+      <h1>3 Años Contigo</h1>
+      <p class="lead">Gracias por cambiar mi mundo. Esto es para ti.</p>
+    </header>
+
     <!-- Carta animada -->
-    <section class="carta-wrap">
+    <section class="carta-wrap" aria-label="Carta de aniversario">
       <div class="carta" id="carta">
-        <div class="sobre-front">
-          <div class="sello">3</div>
-          <div class="texto-sobre">Para ti</div>
+        <div class="sobre-front" id="sobre">
+          <div class="sello">III</div>
+          <div class="texto-sobre">Para mi esposita!</div>
         </div>
 
         <div class="contenido-carta">
-          <button id="btnAbrir" class="btn-primario">Abrir carta</button>
+          <button id="btnAbrir" class="btn-primario" aria-controls="cuerpoCarta">Abrir carta</button>
 
-          <div id="cuerpoCarta" class="cuerpo oculto">
-            <h2 class="titulo-carta">Para mi inspiración</h2>
-            <p id="textoPrincipal" class="texto-carta">
-              <!-- texto dinámico: se inserta desde script.js -->
-            </p>
+          <div id="cuerpoCarta" class="cuerpo oculto" aria-hidden="true">
+            <h2 class="titulo-carta">Dirigo hacia la mujer la cual me hace sentir vivo día a día</h2>
+
+            <p id="textoPrincipal" class="texto-carta"></p>
 
             <div class="spotify">
-              <iframe id="spotifyPlayer" src="https://open.spotify.com/embed/track/6IPwKM3fUUzlElbvKw2sKl" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
+              <!-- Spotify embed (preview) -->
+              <iframe id="spotifyPlayer" src="https://open.spotify.com/embed/track/6IPwKM3fUUzlElbvKw2sKl" width="100%" height="80" frameborder="0" allow="encrypted-media; clipboard-write" title="Spotify - We Fell in Love in October"></iframe>
             </div>
           </div>
         </div>
@@ -41,25 +54,39 @@
     </section>
 
     <!-- Galería animada -->
-    <section class="galeria-wrap">
+    <section class="galeria-wrap" aria-label="Galería de recuerdos">
       <h3 class="subtitulo-seccion">Nuestros recuerdos</h3>
-      <div class="galeria" id="galeria">
-        <div class="foto"><img src="assets/foto1.png" alt="Nosotros 1"></div>
-        <div class="foto"><img src="assets/foto2.png" alt="Nosotros 2"></div>
-        <div class="foto"><img src="assets/foto3.png" alt="Nosotros 3"></div>
+      <div class="galeria" id="galeria" role="list">
+        <div class="foto" role="listitem"><img src="assets/foto1.png" alt="Nosotros 1"></div>
+        <div class="foto" role="listitem"><img src="assets/foto2.png" alt="Nosotros 2"></div>
+        <div class="foto" role="listitem"><img src="assets/foto3.png" alt="Nosotros 3"></div>
+        <div class="foto" role="listitem"><img src="assets/foto4.png" alt="Nosotros 3"></div>
+        <div class="foto" role="listitem"><img src="assets/foto5.png" alt="Nosotros 3"></div>
+        <div class="foto" role="listitem"><img src="assets/foto6.png" alt="Nosotros 3"></div>
+        <div class="foto" role="listitem"><img src="assets/foto7.png" alt="Nosotros 3"></div>
       </div>
     </section>
 
     <!-- Botón sorpresa -->
-    <section class="final-wrap">
+    <section class="final-wrap" aria-label="Sorpresa final">
       <button id="btnSorpresa" class="btn-primario">Haz clic para la sorpresa 🎁</button>
 
-      <div id="mensajeSorpresa" class="mensaje-sorpresa oculto">
+      <div id="mensajeSorpresa" class="mensaje-sorpresa oculto" aria-hidden="true">
         <h2>Feliz 3° aniversario ❤️</h2>
-        <p>Te amo. Gracias por cada día.</p>
-        <div class="catline">🐈‍⬛🐾</div>
+        <p>Te amito. Gracias por cada día.</p>
+        <div class="catline" aria-hidden="true">🐈‍⬛🐾</div>
       </div>
     </section>
+
+    <!-- Ornamento inferior con pequeños gatos SVG -->
+    <div class="ornamento-bot">
+      <svg viewBox="0 0 800 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <g fill="rgba(255,255,255,0.06)">
+          <path d="M20 80 Q40 10 60 80 T100 80" />
+          <!-- simples formas decorativas -->
+        </g>
+      </svg>
+    </div>
   </main>
 
   <script src="script.js"></script>
